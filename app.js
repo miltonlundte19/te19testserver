@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
+const nunjucks = require('nunjucks');
 
 require('dotenv').config();
 
@@ -13,6 +14,11 @@ const tasksRouter = require('./routes/tasks');
 const testRouter = require('./routes/test');
 
 const app = express();
+
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,7 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tasks', tasksRouter);
-
 app.use('/test', testRouter);
 
 module.exports = app;
