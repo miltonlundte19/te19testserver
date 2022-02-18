@@ -10,6 +10,8 @@ require('dotenv').config();
 const indexRouter = require('./routes/index');
 const tasksRouter = require('./routes/tasks');
 
+const taskApiRouter = require('./routes/api/tasks');
+
 const app = express();
 
 nunjucks.configure('views', {
@@ -33,5 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/tasks', tasksRouter);
+
+app.use('/api/tasks', taskApiRouter);
 
 module.exports = app;
