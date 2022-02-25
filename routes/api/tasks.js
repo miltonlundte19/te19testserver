@@ -7,7 +7,6 @@ router.get('/', async (req, res, next) => {
         .promise()
         .query('SELECT * FROM tasks')
         .then(([rows, fields]) => {
-            console.log(rows);
             res.json({
                 tasks: {
                     data: rows
