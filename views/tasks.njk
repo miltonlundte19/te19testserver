@@ -1,9 +1,30 @@
-{% extends layout %}
-{% block content %}
-<div>
-    {% for task in tasks %}
-        <h2 id={{task.id}}>{{task.task}}</h2>
-    {% endfor %}
-</div>
+{% extends layout %} {% block content %}
+<main class="container">
+    <div>
+        <form action="/tasks" method="post">
+            <div class="input-group mb-3">
+                <label for="task" class="form-label visualy-hiden" hidden
+                    >Task</label
+                >
+                <input
+                    type="text"
+                    class="form-control"
+                    name="task"
+                    id="task"
+                    placeholder="Write a task"
+                    required
+                />
+                <button class="btn btn-primary" type="submit">Add task</button>
+            </div>
+        </form>
+        <div class="mb-3">
+            <ul class="list-group">
+                {% for task in tasks %}
+                <li class="list-group-item">{{ task.task }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
 
 {% endblock %}
