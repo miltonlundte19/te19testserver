@@ -1,11 +1,11 @@
 {% extends layout %} {% block content %}
-<main class="container">
+<main class="container mb-3">
     <div>
         <form action="/tasks" method="post">
             <div class="input-group mb-3">
                 <label for="task" class="form-label visualy-hiden" hidden
-                    >Task</label
-                >
+                    >Task
+                </label>
                 <input
                     type="text"
                     class="form-control"
@@ -17,10 +17,40 @@
                 <button class="btn btn-primary" type="submit">Add task</button>
             </div>
         </form>
-        <div class="mb-3">
+        <div>
             <ul class="list-group">
                 {% for task in tasks %}
-                <li class="list-group-item">{{ task.task }}</li>
+                <li class="list-group-item d-flex justify-content-between">
+                    {{ task.task }}
+                    <div class="d-flex">
+                        <div class="form-check me-3">
+                            <input
+                                class="for-check-input"
+                                type="checkbox"
+                                value="{{ task.completed }}"
+                                name="task-{{ task.id }}"
+                                {%
+                                if
+                                task.completed
+                                %}chexked{%
+                                endif
+                                %}
+                            />
+                            <label
+                                class="form-check-label"
+                                for="task-{{ task.id }}"
+                            >
+                                Completed
+                            </label>
+                        </div>
+                        <a
+                            href="/tasks/{{ task.id }}/delete"
+                            class="btn btn-sm btn-danger"
+                        >
+                            Delete task
+                        </a>
+                    </div>
+                </li>
                 {% endfor %}
             </ul>
         </div>

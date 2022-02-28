@@ -63,4 +63,35 @@ router.post('/', async (req, res, next) => {
         });
 });
 
+router.delete('/:id/delete', async (req, res, next) => {
+    const id = req.params.id;
+
+    if (isNaN(req.params.id)) {
+        return res.status(400).json({
+            task: {
+                error: 'Bad request'
+            }
+        });
+    }
+
+    await pool
+        .promise()
+        .query('DELETE FROM tasks WHERE id = ?', [id])
+        .then((respons) => {
+            if (respons[0].affectedRows === 1) {
+                res.redirect('/tasks');
+            } else {
+                res.status(400).redirect('/tasks');
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                task: {
+                    errpr: 'Errpr gettomg tasls'
+                }
+            });
+        });
+});
+
 module.exports = router;
