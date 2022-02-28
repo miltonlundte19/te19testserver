@@ -27,11 +27,6 @@ router.post('/', async (req, res, next) => {
     const task = req.body.task;
 
     if (task.length < 3) {
-        // res.render('tasks.njk', {
-        //    tasks: {},
-        //    title: 'Tasks',
-        //    layout: 'layout.njk'
-        // });
         res.status(400).json({
             task: {
                 error: 'Bad request'
