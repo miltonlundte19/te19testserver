@@ -3,11 +3,15 @@ const router = express.Router();
 const pool = require('../database');
 
 router.get('/', async (req, res, next) => {
+    const flash = req.session.flash;
+    console.log(flash);
+    req.session.flash = null;
     await pool
         .promise()
         .query('SELECT * FROM tasks ORDER BY updated_at DESC')
         .then(([rows, fields]) => {
             res.render('tasks.njk', {
+                flash: flash,
                 tasks: rows,
                 title: 'Tasks',
                 layout: 'layout.njk'
@@ -27,7 +31,7 @@ router.post('/', async (req, res, next) => {
     const task = req.body.task;
 
     if (task.length < 3) {
-        res.status(400).json({
+        return res.status(400).json({
             task: {
                 error: 'Bad request'
             }
@@ -39,6 +43,7 @@ router.post('/', async (req, res, next) => {
         .then((respons) => {
             console.log(respons[0].affectedRows);
             if (respons[0].affectedRows === 1) {
+                req.session.flash = 'Sucsessfully added task';
                 res.redirect('/tasks');
             } else {
                 res.status(400).json({
@@ -58,7 +63,7 @@ router.post('/', async (req, res, next) => {
         });
 });
 
-router.delete('/:id/delete', async (req, res, next) => {
+router.get('/:id/delete', async (req, res, next) => {
     const id = req.params.id;
 
     if (isNaN(req.params.id)) {
@@ -74,8 +79,10 @@ router.delete('/:id/delete', async (req, res, next) => {
         .query('DELETE FROM tasks WHERE id = ?', [id])
         .then((respons) => {
             if (respons[0].affectedRows === 1) {
+                req.session.flash = 'Task deleted';
                 res.redirect('/tasks');
             } else {
+                req.session.flash = 'Task not Found';
                 res.status(400).redirect('/tasks');
             }
         })
