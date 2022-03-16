@@ -96,4 +96,18 @@ router.get('/:id/delete', async (req, res, next) => {
         });
 });
 
+router.post('/:id/complete', async (req, res, next) => {
+    const id = req.params.id;
+
+    await pool
+        .promise()
+        .query('UPDATE taska SET completed = !completed WHERE id = ?', [id])
+        .then((respons) => {
+            console.log(respons);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
+
 module.exports = router;

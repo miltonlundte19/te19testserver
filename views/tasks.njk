@@ -29,12 +29,7 @@
                                 type="checkbox"
                                 value="{{ task.completed }}"
                                 name="task-{{ task.id }}"
-                                {%
-                                if
-                                task.completed
-                                %}chexked{%
-                                endif
-                                %}
+                                {% if task.completed %}chexked{% endif %}
                             />
                             <label
                                 class="form-check-label"
@@ -56,5 +51,5 @@
         </div>
     </div>
 </main>
-
+<script src="/js/complete.js"></script>
 {% endblock %}
